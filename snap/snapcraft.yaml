@@ -1,0 +1,16 @@
+name: linux-flutter-theme
+version: '1.0'
+summary: Linux Themes Gallery For Linux
+description: Linux Themes Gallery For Linux!
+confinement: strict
+base: core18
+parts:
+  linux-flutter-theme:
+    plugin: flutter
+    source: https://github.com/Chandram-Dutta/adwaita_flutter_demo.git
+    flutter-target: lib/main.dart
+
+apps:
+  linux-flutter-theme:
+    command: linux_flutter_theme
+    extensions: [flutter-dev]

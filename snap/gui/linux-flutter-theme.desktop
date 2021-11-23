@@ -1,0 +1,8 @@
+  [Desktop Entry]
+  Name=Linux Flutter Theme
+  Comment=Linux Themes Gallery For Linux
+  Exec=linux-flutter-theme
+  Icon=${SNAP}/meta/gui/flutter.png # replace name to your app name
+  Terminal=falsesudo snap install snapcraft
+  Type=Applicationsudo snap install snapcraft
+  Categories=Education;Flutter; #adjust accordingly your snap category
