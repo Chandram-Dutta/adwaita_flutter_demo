@@ -1,67 +1,101 @@
+import 'package:adwaita_flutter_demo/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:adwaita/adwaita.dart' as adwaita;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final lightThemeProvider = StateProvider((_) => LightTheme().lightTheme);
+final darkThemeProvider = StateProvider((_) => DarkTheme().darkTheme);
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyHomePage()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+// 2. Extend [ConsumerState]
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  ThemesCharacter? _character = ThemesCharacter.material;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: adwaita.lightTheme,
-      darkTheme: adwaita.darkTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      theme: ref.watch(lightThemeProvider),
+      darkTheme: ref.watch(darkThemeProvider),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Linux Themes"),
+        ),
+        body: Center(
+          child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color:
+                          ref.watch(darkThemeProvider).colorScheme.secondary),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              height: 150,
+              width: 400,
+              child: Column(
+                children: [
+                  ListTile(
+                    title: const Text('Default'),
+                    leading: Radio<ThemesCharacter>(
+                      value: ThemesCharacter.material,
+                      groupValue: _character,
+                      onChanged: (ThemesCharacter? value) {
+                        setState(() {
+                          ref.read(lightThemeProvider.state).state =
+                              LightTheme().lightTheme;
+                          ref.read(darkThemeProvider.state).state =
+                              DarkTheme().darkTheme;
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Yaru'),
+                    leading: Radio<ThemesCharacter>(
+                      value: ThemesCharacter.yaru,
+                      groupValue: _character,
+                      onChanged: (ThemesCharacter? value) {
+                        setState(() {
+                          ref.read(lightThemeProvider.state).state =
+                              LightTheme().yaruLight;
+                          ref.read(darkThemeProvider.state).state =
+                              DarkTheme().yaruDark;
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Adwaita'),
+                    leading: Radio<ThemesCharacter>(
+                      value: ThemesCharacter.adwaita,
+                      groupValue: _character,
+                      onChanged: (ThemesCharacter? value) {
+                        setState(() {
+                          ref.read(lightThemeProvider.state).state =
+                              LightTheme().adwaitaLight;
+                          ref.read(darkThemeProvider.state).state =
+                              DarkTheme().adwaitaDark;
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              )),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
+
+enum ThemesCharacter { material, yaru, adwaita }
