@@ -1,6 +1,6 @@
-import 'package:adwaita_flutter_demo/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linux_flutter_theme/themes.dart';
 
 final lightThemeProvider = StateProvider((_) => LightTheme().lightTheme);
 final darkThemeProvider = StateProvider((_) => DarkTheme().darkTheme);
